@@ -7,10 +7,10 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface OrderItemRepository extends JpaRepository<OrderEntity, Long> {
+public interface OrderItemRepository extends JpaRepository<OrderItemEntity, Long> { // OrderItemEntity вместо OrderEntity
     @Query(nativeQuery = true, value = "" +
             "SELECT product_id FROM order_item_entity " +
             "WHERE order_id = ?1 " +
-            "AND returned = 'false'")
+            "AND returned = false") // удалить кавычки у false
     List<Long> getNotReturnedProductIds(long orderId);
 }

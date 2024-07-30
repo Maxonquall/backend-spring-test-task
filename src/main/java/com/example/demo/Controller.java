@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import com.example.demo.dto.ReturnOrderRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -37,25 +38,42 @@ public class Controller {
         orderService.createOrder(productIds);
     }
 
+
+//    /**
+//     * Оформление возврата на один из продуктов в заказе
+//     *
+//     * @param orderId Id заказа
+//     * @param returnedProductId Id продукта, на который оформляется возврат
+//     * @return Id продуктов в заказе, на которые еще не оформлен возврат
+//     */
+//    @PostMapping("/{orderId}/return")
+//    public List<Long> returnOrder(@PathVariable Long orderId,
+//                                  @RequestBody Long returnedProductId) {
+//        return orderService.returnOrder(orderId, returnedProductId);
+//    }
+
     /**
      * Оформление возврата на один из продуктов в заказе
      *
      * @param orderId Id заказа
-     * @param returnedProductId Id продукта, на который оформляется возврат
+     * @param request DTO с id продукта, на который оформляется возврат
      * @return Id продуктов в заказе, на которые еще не оформлен возврат
      */
+    //Замена метода, чтобы не использовать Long и с использованием DTO
     @PostMapping("/{orderId}/return")
     public List<Long> returnOrder(@PathVariable Long orderId,
-                                  @RequestBody Long returnedProductId) {
-        return orderService.returnOrder(orderId, returnedProductId);
+                                  @RequestBody ReturnOrderRequest request) {
+        return orderService.returnOrder(orderId, request.getReturnedProductId());
     }
+
 
     /**
      * Выдача заказа получателю
      *
      * @param orderId Id заказа
      */
-    @PostMapping("/{orderId}/return")
+   // @PostMapping("/{orderId}/return") - продублирован маршрут returnOrder
+    @PostMapping("/{orderId}/issue")
     public void issueOrder(@PathVariable Long orderId) {
         orderService.issueOrder(orderId);
     }

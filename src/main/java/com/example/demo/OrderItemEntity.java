@@ -7,13 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 @Builder
 @AllArgsConstructor
@@ -28,7 +22,13 @@ public class OrderItemEntity {
     @Column(nullable = false, unique = true)
     private Long id;
 
-    @ManyToOne(optional = false, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+//    @ManyToOne(optional = false, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+//    private OrderEntity order;
+
+    // FetchType.LAZY позволяет загружать связанные данные только по необходимости, что может улучшить производительность.
+    // @JoinColumn делает связь более явной и контролируемой на уровне базы данных.
+    @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+    @JoinColumn(name = "order_id", nullable = false)
     private OrderEntity order;
 
     @Column(nullable = false)
